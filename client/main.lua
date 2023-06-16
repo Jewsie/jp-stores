@@ -45,10 +45,15 @@ Citizen.CreateThread(function()
                     label = 'Rob Store',
                     targeticon = 'fas fa-eye',
                     action = function()
-                        if storeRobbed == false then
-                            TriggerEvent('jp-stores:client:startrobbery')
+                        local hasItem = RSGCore.Functions.HasItem('lockpick')
+                        if hasItem then
+                            if storeRobbed == false then
+                                TriggerEvent('rsg-lockpick:client:openLockpick', RobStore)
+                            else
+                                RSGCore.Functions.Notify('You\'ve already done this recently!', 'error', 5000)
+                            end
                         else
-                            RSGCore.Functions.Notify('You\'ve already done this recently!', 'error', 5000)
+                            RSGCore.Functions.Notify('You don\'t have a lockpick!', 'error', 5000)
                         end
                     end
                 },
@@ -57,22 +62,12 @@ Citizen.CreateThread(function()
     end
 end)
 
-RegisterNetEvent('jp-stores:client:startrobbery', function()
-    local selectedWeapon = GetSelectedPedWeapon(PlayerPedId())
-    local ammo = GetAmmoInPedWeapon(PlayerPedId(), selectedWeapon)
-
-    if ammo > 0 then
-        TriggerEvent('qb-lockpick:client:openLockpick', RobStore)
-    else
-        TriggerServerEvent('police:server:policeAlert', 'Robbery in Progress')
-    end
-end)
-
 function RobStore(success)
     local chance = math.random(1, 100)
 
     if chance < 50 then
         TriggerServerEvent('police:server:policeAlert', 'Robbery in Progress')
+        storeRobbed = true
     end
 
     if success then
@@ -80,6 +75,7 @@ function RobStore(success)
     end
     print('Failed robbing the store!')
     TriggerServerEvent('police:server:policeAlert', 'Robbery in Progress')
+    TriggerServerEvent('jp-stores:server:takeLockpick')
 end
 
 RegisterNetEvent('jp-stores:client:robberyCooldown', function()
