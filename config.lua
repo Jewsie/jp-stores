@@ -2,7 +2,7 @@ CONFIG = {}
 
 CONFIG.RobberyAmount = math.random(25, 150) -- How much player will get from robbing the store
 CONFIG.MoneyType = 'cash' -- What kind of money you want the player to get Defaults is; cash, bank, bloodmoney
-CONFIG.MinimumLawmen
+CONFIG.MinimumLawmen = 1
 
 
 CONFIG.StoreLocations = {
