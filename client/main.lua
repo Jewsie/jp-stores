@@ -1,6 +1,7 @@
 local RSGCore = exports['rsg-core']:GetCoreObject()
 
 local storeRobbed = false
+local lawmen = 0
 
 Citizen.CreateThread(function()
     for _, npcstore in pairs(CONFIG.StoreLocations) do
@@ -45,16 +46,23 @@ Citizen.CreateThread(function()
                     label = 'Rob Store',
                     targeticon = 'fas fa-eye',
                     action = function()
-                        local hasItem = RSGCore.Functions.HasItem('lockpick')
-                        if hasItem then
-                            if storeRobbed == false then
-                                TriggerEvent('rsg-lockpick:client:openLockpick', RobStore)
+                        RSGCore.Functions.TriggerCallback('police:GetCops', function(result)
+                            lawmen = result
+                                if lawmen >= CONFIG.MinimumLawmen then
+                                local hasItem = RSGCore.Functions.HasItem('lockpick')
+                                if hasItem then
+                                    if storeRobbed == false then
+                                        TriggerEvent('rsg-lockpick:client:openLockpick', RobStore)
+                                    else
+                                        RSGCore.Functions.Notify('You\'ve already done this recently!', 'error', 5000)
+                                    end
+                                else
+                                    RSGCore.Functions.Notify('You don\'t have a lockpick!', 'error', 5000)
+                                end
                             else
-                                RSGCore.Functions.Notify('You\'ve already done this recently!', 'error', 5000)
+                                RSGCore.Functions.Notify('There aren\'t enough lawmen around!', 'error', 5000)
                             end
-                        else
-                            RSGCore.Functions.Notify('You don\'t have a lockpick!', 'error', 5000)
-                        end
+                        end)
                     end
                 },
             }
