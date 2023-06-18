@@ -20,8 +20,8 @@ CONFIG.StoreLocations = {
         blipsprite = 4149098929, -- Blip sprite you want the store to have
         model = 'U_M_M_BwmStablehand_01' -- The PED Model you want the store to be
     },
-}```
-
+}
+```
 It's important to note how the configs look, cause any incosistency may break it, but aslong you follow the already written config files it should be fine. Name of the store can be anything you want it to be, it's just a label, the most important is the type of the store which will match together with products/storeitems, so aslong the storeitems has the same type as the store you want it to be in, it will automatically be assigned fx like this;
 
 ```
@@ -32,8 +32,8 @@ It's important to note how the configs look, cause any incosistency may break it
         info = {}, -- Not too important, but often used for writing info for crafting stuff(Not useful in this script)
         type = "gunstore", -- Need to match the storelocations type, to be in the right store
         slot = 1, -- The order of which the item is in! Can't be 2 items with same type/category in the same slot!
-    },```
-
+    },
+```
 It's also important you add [1] and a number, as that will bed assigned as the slot in the buymenu, if you don't add it, the script will have no clue in which order to place the items. Besides that it's faily easy
 
 Need any support or help? Join the discord; https://discord.gg/JQMfXsf6h6
